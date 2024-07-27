@@ -6,3 +6,4 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         uic.loadUi('Design.ui', self)
+        self.setWindowTitle('TextUra')
