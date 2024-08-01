@@ -104,10 +104,18 @@
     <addaction name="actionRight"/>
     <addaction name="actionJustify"/>
    </widget>
+   <widget class="QMenu" name="menuFind">
+    <property name="title">
+     <string>Find</string>
+    </property>
+    <addaction name="actionFind"/>
+    <addaction name="actionFind_and_replace"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
    <addaction name="menuFormat"/>
    <addaction name="menuStyle"/>
+   <addaction name="menuFind"/>
   </widget>
   <widget class="QToolBar" name="toolBar">
    <property name="windowTitle">
@@ -233,6 +241,16 @@
   <action name="actionJustify">
    <property name="text">
     <string>Justify</string>
+   </property>
+  </action>
+  <action name="actionFind_and_replace">
+   <property name="text">
+    <string>Find and replace</string>
+   </property>
+  </action>
+  <action name="actionFind">
+   <property name="text">
+    <string>Find</string>
    </property>
   </action>
  </widget>

@@ -1,8 +1,8 @@
 from PyQt5 import uic
-from PyQt5.QtWidgets import QMainWindow, QFileDialog, QMessageBox, QFontDialog, QColorDialog
-from PyQt5.QtCore import QFileInfo, Qt
+from PyQt5.QtWidgets import QMainWindow, QFileDialog, QMessageBox, QFontDialog, QColorDialog, QInputDialog
+from PyQt5.QtCore import QFileInfo, Qt, QRegExp
 from PyQt5.QtPrintSupport import QPrinter
-from PyQt5.QtGui import QFont, QTextCharFormat
+from PyQt5.QtGui import QFont, QTextCharFormat, QTextCursor, QBrush, QColor
 
 
 class MainWindow(QMainWindow):
@@ -32,6 +32,8 @@ class MainWindow(QMainWindow):
         self.actionCenter.triggered.connect(self.text_center)
         self.actionRight.triggered.connect(self.text_right)
         self.actionJustify.triggered.connect(self.text_justify)
+        self.actionFind.triggered.connect(self.find_text)
+        self.actionFind_and_replace.triggered.connect(self.find_and_replace)
 
     def file_new(self):
         self.textEdit.clear()
@@ -117,3 +119,45 @@ class MainWindow(QMainWindow):
 
     def text_justify(self):
         self.textEdit.setAlignment(Qt.AlignJustify)
+
+    def find_text(self):
+        find_text, ok = QInputDialog.getText(self, "Поиск", "Введите текст для поиска:")
+        if ok:
+            text = self.textEdit.toPlainText()
+            regexp = QRegExp(find_text)
+            if regexp.isValid():
+                cursor = self.textEdit.textCursor()
+                format = QTextCharFormat()
+                format.setBackground(QBrush(QColor("yellow")))
+                cursor.beginEditBlock()
+                index = 0
+                while True:
+                    pos = regexp.indexIn(text, index)
+                    if pos == -1:
+                        break
+                    cursor.setPosition(pos)
+                    cursor.setPosition(pos + regexp.matchedLength(), QTextCursor.KeepAnchor)
+                    cursor.setCharFormat(format)
+                    index = pos + regexp.matchedLength()
+                cursor.endEditBlock()
+            else:
+                QMessageBox.critical(self, "Ошибка", "Ошибка в регулярном выражении")
+
+    def find_and_replace(self):
+        find_text, ok = QInputDialog.getText(self, "Найти и заменить", "Найти (регулярное выражение):")
+        if ok:
+            replace_text, ok = QInputDialog.getText(self, "Найти и заменить", "Заменить на:")
+            if ok:
+                text = self.textEdit.toPlainText()
+                regexp = QRegExp(find_text)
+                if regexp.isValid():
+                    index = 0
+                    while True:
+                        pos = regexp.indexIn(text, index)
+                        if pos == -1:
+                            break
+                        text = text[:pos] + replace_text + text[pos + regexp.matchedLength():]
+                        index = pos + len(replace_text)
+                    self.textEdit.setPlainText(text)
+                else:
+                    QMessageBox.critical(self, "Ошибка", "Ошибка в регулярном выражении")
