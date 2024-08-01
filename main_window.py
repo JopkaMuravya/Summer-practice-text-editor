@@ -2,7 +2,7 @@ from PyQt5 import uic
 from PyQt5.QtWidgets import QMainWindow, QFileDialog, QMessageBox, QFontDialog, QColorDialog
 from PyQt5.QtCore import QFileInfo, Qt
 from PyQt5.QtPrintSupport import QPrinter
-from PyQt5.QtGui import QFont
+from PyQt5.QtGui import QFont, QTextCharFormat
 
 
 class MainWindow(QMainWindow):
@@ -85,19 +85,26 @@ class MainWindow(QMainWindow):
         self.textEdit.setTextColor(color)
 
     def text_bold(self):
-        font = QFont()
-        font.setBold(True)
-        self.textEdit.setFont(font)
+        cursor = self.textEdit.textCursor()
+        if cursor.hasSelection():
+            format = QTextCharFormat()
+            weight = QFont.Bold if cursor.charFormat().font().weight() != QFont.Bold else QFont.Normal
+            format.setFontWeight(weight)
+            cursor.mergeCharFormat(format)
 
     def text_italic(self):
-        font = QFont()
-        font.setItalic(True)
-        self.textEdit.setFont(font)
+        cursor = self.textEdit.textCursor()
+        if cursor.hasSelection():
+            format = QTextCharFormat()
+            format.setFontItalic(not cursor.charFormat().fontItalic())
+            cursor.mergeCharFormat(format)
 
     def text_underline(self):
-        font = QFont()
-        font.setUnderline(True)
-        self.textEdit.setFont(font)
+        cursor = self.textEdit.textCursor()
+        if cursor.hasSelection():
+            format = QTextCharFormat()
+            format.setFontUnderline(not cursor.charFormat().fontUnderline())
+            cursor.mergeCharFormat(format)
 
     def text_left(self):
         self.textEdit.setAlignment(Qt.AlignLeft)
