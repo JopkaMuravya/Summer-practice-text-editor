@@ -101,7 +101,8 @@
     <addaction name="separator"/>
     <addaction name="actionLeft"/>
     <addaction name="actionCenter"/>
-    <addaction name="actionRighht"/>
+    <addaction name="actionRight"/>
+    <addaction name="actionJustify"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -199,9 +200,9 @@
     <string>Center</string>
    </property>
   </action>
-  <action name="actionRighht">
+  <action name="actionRight">
    <property name="text">
-    <string>Righht</string>
+    <string>Right</string>
    </property>
   </action>
   <action name="actionExport_PDF">
@@ -227,6 +228,11 @@
   <action name="actionRedo">
    <property name="text">
     <string>Redo</string>
+   </property>
+  </action>
+  <action name="actionJustify">
+   <property name="text">
+    <string>Justify</string>
    </property>
   </action>
  </widget>

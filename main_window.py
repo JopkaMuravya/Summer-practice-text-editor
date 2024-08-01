@@ -1,8 +1,8 @@
 from PyQt5 import uic
-from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QMainWindow, QFileDialog, QMessageBox
-from PyQt5.QtCore import QFileInfo
-from PyQt5.QtPrintSupport import QPrinter, QPrintDialog, QPrintPreviewDialog
+from PyQt5.QtWidgets import QMainWindow, QFileDialog, QMessageBox, QFontDialog, QColorDialog
+from PyQt5.QtCore import QFileInfo, Qt
+from PyQt5.QtPrintSupport import QPrinter
+from PyQt5.QtGui import QFont
 
 
 class MainWindow(QMainWindow):
@@ -23,6 +23,15 @@ class MainWindow(QMainWindow):
         self.actionCut.triggered.connect(self.cut_text)
         self.actionUndo.triggered.connect(self.textEdit.undo)
         self.actionRedo.triggered.connect(self.textEdit.redo)
+        self.actionFont.triggered.connect(self.font_dialog)
+        self.actionColor.triggered.connect(self.color_dialog)
+        self.actionBold.triggered.connect(self.text_bold)
+        self.actionItalic.triggered.connect(self.text_italic)
+        self.actionUnderline.triggered.connect(self.text_underline)
+        self.actionLeft.triggered.connect(self.text_left)
+        self.actionCenter.triggered.connect(self.text_center)
+        self.actionRight.triggered.connect(self.text_right)
+        self.actionJustify.triggered.connect(self.text_justify)
 
     def file_new(self):
         self.textEdit.clear()
@@ -64,3 +73,40 @@ class MainWindow(QMainWindow):
 
     def cut_text(self):
         self.textEdit.cut()
+
+    def font_dialog(self):
+        font, ok = QFontDialog.getFont()
+
+        if ok:
+            self.textEdit.setFont(font)
+
+    def color_dialog(self):
+        color = QColorDialog.getColor()
+        self.textEdit.setTextColor(color)
+
+    def text_bold(self):
+        font = QFont()
+        font.setBold(True)
+        self.textEdit.setFont(font)
+
+    def text_italic(self):
+        font = QFont()
+        font.setItalic(True)
+        self.textEdit.setFont(font)
+
+    def text_underline(self):
+        font = QFont()
+        font.setUnderline(True)
+        self.textEdit.setFont(font)
+
+    def text_left(self):
+        self.textEdit.setAlignment(Qt.AlignLeft)
+
+    def text_center(self):
+        self.textEdit.setAlignment(Qt.AlignCenter)
+
+    def text_right(self):
+        self.textEdit.setAlignment(Qt.AlignRight)
+
+    def text_justify(self):
+        self.textEdit.setAlignment(Qt.AlignJustify)
