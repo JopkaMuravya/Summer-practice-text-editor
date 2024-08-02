@@ -169,6 +169,8 @@
     </property>
     <addaction name="actionFont"/>
     <addaction name="actionColor"/>
+    <addaction name="separator"/>
+    <addaction name="actionCustom_style"/>
    </widget>
    <widget class="QMenu" name="menuStyle">
     <property name="title">
@@ -330,6 +332,11 @@
   <action name="actionFind">
    <property name="text">
     <string>Find</string>
+   </property>
+  </action>
+  <action name="actionCustom_style">
+   <property name="text">
+    <string>Custom style</string>
    </property>
   </action>
  </widget>

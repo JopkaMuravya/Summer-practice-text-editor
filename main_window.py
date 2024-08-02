@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QMainWindow, QFileDialog, QMessageBox, QFontDialog, 
 from PyQt5.QtCore import QFileInfo, Qt, QRegExp
 from PyQt5.QtPrintSupport import QPrinter
 from PyQt5.QtGui import QFont, QTextCharFormat, QTextCursor, QBrush, QColor, QTextBlockFormat
+from FontSettingsWidget import FontSettingsWidget
 
 
 class MainWindow(QMainWindow):
@@ -36,7 +37,7 @@ class MainWindow(QMainWindow):
         self.actionFind_and_replace.triggered.connect(self.find_and_replace)
         self.spinBoxIndentation.valueChanged.connect(self.indentation)
         self.spinBoxInterval.valueChanged.connect(self.interval)
-
+        self.actionCustom_style.triggered.connect(self.custom_style)
 
     def file_new(self):
         self.textEdit.clear()
@@ -182,3 +183,13 @@ class MainWindow(QMainWindow):
         cursor.mergeBlockFormat(format)
         cursor.endEditBlock()
         self.textEdit.setTextCursor(cursor)
+
+    def custom_style(self):
+        self.custom = FontSettingsWidget()
+        self.custom.show()
+        self.custom.apply_button.clicked.connect(self.apply_settings)
+
+    def apply_settings(self):
+        self.textEdit.setCurrentFont(self.custom.font)
+        self.textEdit.setTextColor(self.custom.color)
+
