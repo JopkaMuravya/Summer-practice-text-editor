@@ -2,7 +2,7 @@ from PyQt5 import uic
 from PyQt5.QtWidgets import QMainWindow, QFileDialog, QMessageBox, QFontDialog, QColorDialog, QInputDialog
 from PyQt5.QtCore import QFileInfo, Qt, QRegExp
 from PyQt5.QtPrintSupport import QPrinter
-from PyQt5.QtGui import QFont, QTextCharFormat, QTextCursor, QBrush, QColor
+from PyQt5.QtGui import QFont, QTextCharFormat, QTextCursor, QBrush, QColor, QTextBlockFormat
 
 
 class MainWindow(QMainWindow):
@@ -11,7 +11,7 @@ class MainWindow(QMainWindow):
         self.filename = None
         uic.loadUi('Design.ui', self)
         self.setWindowTitle('TextUra')
-        self.setCentralWidget(self.textEdit)
+        self.setLayout(self.gridLayout)
 
         self.actionNew.triggered.connect(self.file_new)
         self.actionOpen.triggered.connect(self.open_file)
@@ -34,6 +34,9 @@ class MainWindow(QMainWindow):
         self.actionJustify.triggered.connect(self.text_justify)
         self.actionFind.triggered.connect(self.find_text)
         self.actionFind_and_replace.triggered.connect(self.find_and_replace)
+        self.spinBoxIndentation.valueChanged.connect(self.indentation)
+        self.spinBoxInterval.valueChanged.connect(self.interval)
+
 
     def file_new(self):
         self.textEdit.clear()
@@ -161,3 +164,21 @@ class MainWindow(QMainWindow):
                     self.textEdit.setPlainText(text)
                 else:
                     QMessageBox.critical(self, "Ошибка", "Ошибка в регулярном выражении")
+
+    def indentation(self):
+        indent_size = self.spinBoxIndentation.value()
+        cursor = self.textEdit.textCursor()
+        block_format = QTextBlockFormat()
+        block_format.setTextIndent(indent_size)
+        cursor.mergeBlockFormat(block_format)
+
+    def interval(self):
+        line_spacing = self.spinBoxInterval.value()
+        format = QTextBlockFormat()
+        format.setLineHeight(line_spacing, QTextBlockFormat.ProportionalHeight)
+        cursor = self.textEdit.textCursor()
+        cursor.beginEditBlock()
+        cursor.select(QTextCursor.Document)
+        cursor.mergeBlockFormat(format)
+        cursor.endEditBlock()
+        self.textEdit.setTextCursor(cursor)
