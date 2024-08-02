@@ -82,9 +82,16 @@ class MainWindow(QMainWindow):
 
     def font_dialog(self):
         font, ok = QFontDialog.getFont()
-
         if ok:
-            self.textEdit.setFont(font)
+            cursor = self.textEdit.textCursor()
+            selected_text = cursor.selectedText()
+            if selected_text:
+                new_font = font
+                format = QTextCharFormat()
+                format.setFont(new_font)
+                cursor.mergeCharFormat(format)
+            else:
+                self.textEdit.setCurrentFont(font)
 
     def color_dialog(self):
         color = QColorDialog.getColor()
